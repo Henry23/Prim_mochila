@@ -10,11 +10,14 @@ import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import java.awt.Dimension;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import java.io.IOException;
 import javax.swing.JFrame;
+
 
 /**
  *
@@ -27,6 +30,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        jSpinner1.setValue(20);
     }
 
     /**
@@ -39,8 +43,11 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Simulador Prim's Algorithm");
 
         jButton1.setText("Generar Grafo");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -49,21 +56,33 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Mochilla Peso");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(517, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(139, 139, 139))
+                .addGap(31, 31, 31))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(610, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(258, Short.MAX_VALUE)
+                .addGap(63, 63, 63)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 327, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(195, 195, 195))
+                .addGap(43, 43, 43))
         );
 
         pack();
@@ -73,9 +92,28 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         graph = null;
         
+        Item a = new Item("a", 5, 7);
+        Item b = new Item("b", 8, 17);
+        Item c = new Item("c", 16, 5);
+        
         graph = new SparseMultigraph();
         
-        //printgraph(graph);
+        System.out.println(a.toString());
+        System.out.println(b.toString());
+        System.out.println(c.toString());
+        
+        try{
+            
+            graph.addEdge(a.getPeso(), a.getNombre(), b.getNombre() ,EdgeType.UNDIRECTED);
+            graph.addEdge(b.getPeso(), b.getNombre(), c.getNombre() ,EdgeType.UNDIRECTED);
+            graph.addEdge(c.getPeso(), c.getNombre(), a.getNombre() ,EdgeType.UNDIRECTED);
+            graph.addVertex(a.getNombre());
+            graph.addVertex(b.getNombre());
+            graph.addVertex(c.getNombre());
+        } catch (Exception e) {
+ 
+        }
+        printgraph(graph);
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
@@ -115,8 +153,11 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JSpinner jSpinner1;
     // End of variables declaration//GEN-END:variables
     Graph graph;
+    
     
     public void printgraph(Graph g) {
         // Graph<V, E> donde v es el tipo de vertices y e es tipo de edges
@@ -132,7 +173,7 @@ public class Main extends javax.swing.JFrame {
         DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
         gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
         vv.setGraphMouse(gm);
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Graph Prim's Algorithm");
         //x.getName().substring(0, x.getName().length() - 4)
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(vv);
